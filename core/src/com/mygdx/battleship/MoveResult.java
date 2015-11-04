@@ -14,4 +14,16 @@ public class MoveResult {
         this.sunkShip = sunkShip;
     }
 
+    public String getCoordinate() {
+        return coordinate;
+    }
+
+    public BattleshipType getSunkShip() {
+        return sunkShip;
+    }
+
+    public ResultType getResult() {
+        return result;
+    }
+
 }
