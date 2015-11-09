@@ -14,12 +14,14 @@ import java.util.Set;
 public class BattleshipGame implements Screen {
 
 	private static int RETRY_THRESHOLD = 3;
-	private static int SLEEP_TIME_BETWEEN_TURNS = 10; //miliseconds
+	private static int SLEEP_TIME_BETWEEN_TURNS = 0; //miliseconds
 
     //How many times should the game play
     //TODO take as user input
     private int numGamesPlayed = 0;
     private int numGamesToPlay = 5;
+
+    int[] wins = new int[]{0,0};
 
 	private final GameCanvas canvas;
 	private BattleshipMap map;
@@ -136,15 +138,17 @@ public class BattleshipGame implements Screen {
 	}
 
 	private void update(float delta) {
-		performMoveForPlayer(Player.PLAYER_1);
-		performMoveForPlayer(Player.PLAYER_2);
-        BattleshipUtils.sleep(SLEEP_TIME_BETWEEN_TURNS);
-        if(gameOver) {
-            if (numGamesPlayed < numGamesToPlay) {
-                numGamesPlayed++;
+        if (!gameOver) {
+            performMoveForPlayer(Player.PLAYER_1);
+            performMoveForPlayer(Player.PLAYER_2);
+            BattleshipUtils.sleep(SLEEP_TIME_BETWEEN_TURNS);
+        } else {
+            if (++numGamesPlayed < numGamesToPlay) {
                 reset();
             } else {
                 waitForUserInput();
+                System.out.println("Player 1 Wins: " + wins[0] + "\n" +
+                                   "Player 2 Wins: " + wins[1]);
                 System.exit(0);
             }
         }
@@ -204,6 +208,7 @@ public class BattleshipGame implements Screen {
 		getBotForPlayer(adversary).setOpponentMoveResult(result);
 		if (result.getResult() == ResultType.WIN){
 			System.out.println("Player " + player.getPlayerNum() + " wins");
+            wins[player.getPlayerNum()-1]++;
             gameOver = true;
 		}
 	}

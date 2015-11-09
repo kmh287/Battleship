@@ -116,10 +116,12 @@ public class BattleshipUtils {
     }
 
     public static void sleep(long miliseconds){
-        try{
-            Thread.sleep(miliseconds);
-        } catch (InterruptedException e){
+        if (miliseconds > 0) {
+            try {
+                Thread.sleep(miliseconds);
+            } catch (InterruptedException e) {
 
+            }
         }
     }
 

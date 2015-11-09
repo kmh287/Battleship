@@ -139,9 +139,13 @@ public class TestBot implements BattleshipBot  {
      * returns the next move
      */
     public String getMove() {
-        String move = moves.get(0);
-        moves.remove(0);
-        return move;
+        if(moves.size() > 0) {
+            String move = moves.get(0);
+            moves.remove(0);
+            return move;
+        } else{
+            return "A1";
+        }
     }
 
 
