@@ -176,23 +176,23 @@ public class BattleshipMap {
         int targetBoardOffset = 10 * 45 + 50;
 
         //Take advantage of equivalent dimensions
-        //Remember, coordinates start at the top left
+        //Remember, coordinates start at the bottom right
         for (int i = 0; i < 10; ++i){
             for (int j = 0; j < 10; ++j){
-                //Lower left
-                canvas.draw(player1Fleet[i][j].getTexture(), i * 45, j * 45 + targetBoardOffset);
+                //Bottom left
+                canvas.draw(player1Fleet[i][j].getTexture(), i * 45, j * 45);
                 //Top left
-                canvas.draw(player1targets[i][j].getTexture(), i * 45, j * 45);
+                canvas.draw(player1targets[i][j].getTexture(), i * 45, j * 45 + targetBoardOffset);
                 //Bottom right
-                canvas.draw(player2fleet[i][j].getTexture(), i * 45 + board2HorizontalOffset, j * 45 + targetBoardOffset);
+                canvas.draw(player2fleet[i][j].getTexture(), i * 45 + board2HorizontalOffset, j * 45);
                 //Top right
-                canvas.draw(player2targets[i][j].getTexture(), i * 45 + board2HorizontalOffset, j * 45);
+                canvas.draw(player2targets[i][j].getTexture(), i * 45 + board2HorizontalOffset, j * 45 + targetBoardOffset);
             }
         }
 
         //Draw blackbars
-        canvas.draw(horizontalBlackBar, 0, board2HorizontalOffset);
-        canvas.draw(verticalBlackBar, 450, Gdx.graphics.getHeight());
+        canvas.draw(horizontalBlackBar, 0, 450);
+        canvas.draw(verticalBlackBar, 450, 0);
     }
 
     private void loadAssets(AssetManager manager){
@@ -202,6 +202,9 @@ public class BattleshipMap {
         manager.load(HIT, Texture.class);
         manager.load(FOG, Texture.class);
         manager.load(HORIZONTAL_BLACK_BAR, Texture.class);
+        manager.load(VERTICAL_BLACK_BAR, Texture.class);
+
+        manager.finishLoading();
 
         waterTexture = (Texture) (manager.isLoaded(WATER) ? manager.get(WATER) : null);
         shipTexture = (Texture) (manager.isLoaded(SHIP) ? manager.get(SHIP) : null);
@@ -209,6 +212,7 @@ public class BattleshipMap {
         hitTexture = (Texture) (manager.isLoaded(HIT) ? manager.get(HIT) : null);
         fogTexture = (Texture) (manager.isLoaded(FOG) ? manager.get(FOG) : null);
         horizontalBlackBar = (Texture) (manager.isLoaded(HORIZONTAL_BLACK_BAR) ? manager.get(HORIZONTAL_BLACK_BAR) : null);
+        verticalBlackBar = (Texture) (manager.isLoaded(VERTICAL_BLACK_BAR) ? manager.get(VERTICAL_BLACK_BAR) : null);
     }
 
 }

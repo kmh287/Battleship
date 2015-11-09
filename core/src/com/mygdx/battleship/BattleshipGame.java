@@ -3,28 +3,26 @@ package com.mygdx.battleship;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.oracle.tools.packager.Log;
 
-public class Battleship implements Screen {
+public class BattleshipGame implements Screen {
 
 	private final GameCanvas canvas;
+	private final BattleshipMap map;
 
-	public Battleship(GameCanvas canvas){
+	public BattleshipGame (GameCanvas canvas){
 		this.canvas = canvas;
-	}
-
-	@Override
-	public void show () {
-
+		this.map = new BattleshipMap(true, new AssetManager(), new String[0][0], new String[0][0]);
 	}
 
 	@Override
 	public void render (float delta) {
 		update(delta);
-		draw (delta);
+		draw(delta);
 		Log.debug("foo");
 	}
 
@@ -33,6 +31,15 @@ public class Battleship implements Screen {
 	}
 
 	private void draw(float delta){
+		canvas.begin();
+		map.draw(canvas);
+		canvas.end();
+	}
+
+/** Unused overrides **/
+
+	@Override
+	public void show () {
 
 	}
 

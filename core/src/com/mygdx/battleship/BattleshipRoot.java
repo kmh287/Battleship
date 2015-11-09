@@ -7,7 +7,7 @@ public class BattleshipRoot extends Game {
     @Override
     public void create () {
         GameCanvas canvas = new GameCanvas();
-        Battleship battleship = new Battleship(canvas);
-        setScreen(battleship);
+        BattleshipGame battleshipGame = new BattleshipGame(canvas);
+        setScreen(battleshipGame);
     }
 }
