@@ -2,7 +2,7 @@ package com.mygdx.battleship;
 
 import java.util.HashSet;
 
-public class Utils {
+public class BattleshipUtils {
 
     /**
      * Returns the __array index position__ for the given coordinate
@@ -43,7 +43,7 @@ public class Utils {
         }
     }
 
-    private static boolean validateFleet(String[][] fleet){
+    public static boolean validateFleet(String[][] fleet){
         if (fleet == null) return false;
         if (fleet.length != 5) return false;
         for (String[] ship : fleet){
@@ -71,10 +71,10 @@ public class Utils {
         return true;
     }
 
-    private static boolean validateShip(String[] ship){
+    public static boolean validateShip(String[] ship){
         if (ship == null) return false;
-        int[] xCoords = new int[5];
-        int[] yCoords = new int[5];
+        int[] xCoords = new int[ship.length];
+        int[] yCoords = new int[ship.length];
         for (int i = 0; i < ship.length; ++i){
             String coordinate = ship[i];
             if (!validateCoordinate(coordinate)) return false;
@@ -113,6 +113,14 @@ public class Utils {
             if (arr[i] != ++curr) return false;
         }
         return true;
+    }
+
+    public static void sleep(long miliseconds){
+        try{
+            Thread.sleep(miliseconds);
+        } catch (InterruptedException e){
+
+        }
     }
 
 }

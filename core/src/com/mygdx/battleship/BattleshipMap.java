@@ -110,9 +110,9 @@ public class BattleshipMap {
         for (String[] ship : ships){
             for (String point : ship){
                 // Shift the character down
-                int col = Utils.getColumnFromCoordinate(point);
+                int col = BattleshipUtils.getColumnFromCoordinate(point);
                 //If the string has 3 characters then it's 10, otherwise it's just the int version of the digit
-                int row = Utils.getRowFromCoordinate(point);
+                int row = BattleshipUtils.getRowFromCoordinate(point);
                 fleet[row][col] = TILE_TYPE.SHIP;
             }
         }
@@ -147,8 +147,8 @@ public class BattleshipMap {
      */
     public void updateMap(Player attackingPlayer, String coordinate, boolean hit){
 
-        int row = Utils.getRowFromCoordinate(coordinate);
-        int col = Utils.getColumnFromCoordinate(coordinate);
+        int row = BattleshipUtils.getRowFromCoordinate(coordinate);
+        int col = BattleshipUtils.getColumnFromCoordinate(coordinate);
 
         //Always update target board, only update player 2 fleet if fog is off and hit
         if (attackingPlayer == Player.PLAYER_1){
