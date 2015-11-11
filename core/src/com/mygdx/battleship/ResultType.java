@@ -2,5 +2,5 @@ package com.mygdx.battleship;
 
 
 public enum ResultType{
-    MISS, HIT, SINK, WIN, LOSS
+    MISS, HIT, SINK, WIN
 }

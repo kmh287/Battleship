@@ -6,15 +6,16 @@ import com.mygdx.battleship.BattleshipUtils;
 import com.mygdx.battleship.MoveResult;
 
 
-public class RandomBot extends BattleshipBot  {
+public class TestBot extends BattleshipBot  {
 
     private final List<String> moves = new ArrayList<>(100);
 
     /**
      * Constructor
      */
-    public RandomBot(String name) {
+    public TestBot(String name) {
         super(name);
+        shipPlacements();
         setupMoves();
     }
 
@@ -123,7 +124,6 @@ public class RandomBot extends BattleshipBot  {
      * [destroyer2, cruiser3, submarine3, battleship4, carrier5]
      */
     public String[][] getShipPlacements() {
-        shipPlacements();
         return shipsLocations;
     }
 
