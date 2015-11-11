@@ -1,6 +1,5 @@
 package com.mygdx.battleship.BattleshipBots;
 
-
 import com.mygdx.battleship.MoveResult;
 
 public interface BattleshipBot {
