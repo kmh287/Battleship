@@ -19,7 +19,7 @@ public class BattleshipGame implements Screen {
     //How many times should the game play
     //TODO take as user input
     private int numGamesPlayed = 0;
-    private int numGamesToPlay = 5;
+    private int numGamesToPlay = 100;
 
     int[] wins = new int[]{0,0};
 
@@ -140,7 +140,9 @@ public class BattleshipGame implements Screen {
 	private void update(float delta) {
         if (!gameOver) {
             performMoveForPlayer(Player.PLAYER_1);
-            performMoveForPlayer(Player.PLAYER_2);
+			if (!gameOver) {
+				performMoveForPlayer(Player.PLAYER_2);
+			}
             BattleshipUtils.sleep(SLEEP_TIME_BETWEEN_TURNS);
         } else {
             if (++numGamesPlayed < numGamesToPlay) {
