@@ -21,7 +21,7 @@ public class BattleshipUtils {
      * @return [0,9]
      */
     public static int getColumnFromCoordinate(String coordinate){
-        return Integer.parseInt(coordinate.substring(1)) - 1;
+        return 9 - (Integer.parseInt(coordinate.substring(1)) - 1);
     }
 
     public static boolean validateCoordinate(String coordinate){
