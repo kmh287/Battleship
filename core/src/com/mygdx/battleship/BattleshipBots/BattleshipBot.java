@@ -1,18 +1,17 @@
 package com.mygdx.battleship.BattleshipBots;
 
-import com.mygdx.battleship.BattleshipUtils;
 import com.mygdx.battleship.MoveResult;
 
 import java.util.*;
 
-abstract class BattleshipBot {
+public abstract class BattleshipBot {
 
-    protected String name; //name of bot
+    protected final String name; //name of bot
     protected final int[] shipSizes = {2,3,3,4,5};
-    protected String[][] shipsLocations;
+    protected final String[][] shipsLocations;
+    protected final HashMap<String,String> botShots; //bot's shots
+    protected final HashMap<String,String> opponentShots; //opponents shots
     protected String move;
-    protected HashMap<String,String> botShots; //bot's shots
-    protected HashMap<String,String> opponentShots; //opponents shots
 
 	public BattleshipBot(String name) {
         this.name = name;
@@ -25,12 +24,12 @@ abstract class BattleshipBot {
 	 * returns array of ship placements as array of grid points.
 	 * [destroyer2, cruiser3, submarine3, battleship4, carrier5]
 	 */
-	abstract public String[][] getShipPlacements();
+    public abstract String[][] getShipPlacements();
 
-	abstract public String getMove();
+    public abstract String getMove();
 
-	abstract void setMyMoveResult(MoveResult result);
+	public abstract void setMyMoveResult(MoveResult result);
 
-	abstract public void setOpponentMoveResult(MoveResult result);
+    public abstract void setOpponentMoveResult(MoveResult result);
 
 }

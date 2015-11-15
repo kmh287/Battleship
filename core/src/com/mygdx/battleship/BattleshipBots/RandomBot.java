@@ -4,11 +4,11 @@ import java.util.*;
 
 import com.mygdx.battleship.BattleshipUtils;
 import com.mygdx.battleship.MoveResult;
-
+import com.mygdx.battleship.OrientationType;
 
 public class RandomBot extends BattleshipBot  {
 
-    private final List<String> moves = new ArrayList<>(100);
+    private final LinkedList<String> moves = new LinkedList<>();
 
     /**
      * Constructor
@@ -33,26 +33,18 @@ public class RandomBot extends BattleshipBot  {
      * Sets ship placement variable.
      */
     private void shipPlacements() {
-        //start from the largest ship.
         int curShip = 0;
-
         HashSet<String> usedCoordinates = new HashSet<>();
 
         while (curShip < 5) {
-
-            if(usedCoordinates.size() > 2+3+3+4+5){
-                int y = 2;
-            }
-
-            int orientation;
             boolean reset = false;
             String[] placement = new String[shipSizes[curShip]];
             //decide random starting position and orientation
             Random rand1 = new Random();
             Random rand2 = new Random();
             char startL = (char) (rand1.nextInt(10) + 'a');
-            int  startR = rand1.nextInt(10);
-            orientation = rand2.nextInt(4);
+            int  startR = rand1.nextInt(10)+1;
+            OrientationType orientation = OrientationType.values()[rand2.nextInt(4)];
 
             //place ships
             String start = String.valueOf(Character.toUpperCase(startL)) + startR;
@@ -61,51 +53,58 @@ public class RandomBot extends BattleshipBot  {
             } else {
                 placement[0] = start;
             }
+            switch (orientation) {
+                case WEST:
+                    for (int x = 1; x < shipSizes[curShip]; x++) {
+                        char newL = (char) (startL - x);
+                        String newPlace = String.valueOf(Character.toUpperCase(newL)) + startR;
+                        if (usedCoordinates.contains(newPlace) || !BattleshipUtils.validateCoordinate(newPlace)) {
+                            reset = true;
+                            break;
+                        } else {
+                            placement[x] = newPlace;
+                        }
+                    }
+                    break;
 
-            if (orientation == 0) { // north
-                for (int x = 1; x < shipSizes[curShip]; x++) {
-                    char newL = (char) (startL - x);
-                    String newPlace = String.valueOf(Character.toUpperCase(newL)) + startR;
-                    if (usedCoordinates.contains(newPlace) || !BattleshipUtils.validateCoordinate(newPlace)){
-                        reset = true;
-                        break;
-                    } else {
-                        placement[x] = newPlace;
+                case NORTH:
+                    for (int x = 1; x < shipSizes[curShip]; x++) {
+                        int newR = startR + x;
+                        String newPlace = String.valueOf(Character.toUpperCase(startL)) + newR;
+                        if (usedCoordinates.contains(newPlace) || !BattleshipUtils.validateCoordinate(newPlace)) {
+                            reset = true;
+                            break;
+                        } else {
+                            placement[x] = newPlace;
+                        }
                     }
-                }
-            } else if (orientation == 1) { // east
-                for (int x = 1; x < shipSizes[curShip]; x++) {
-                    int newR = startR + x;
-                    String newPlace = String.valueOf(Character.toUpperCase(startL)) + newR;
-                    if (usedCoordinates.contains(newPlace) || !BattleshipUtils.validateCoordinate(newPlace)){
-                        reset = true;
-                        break;
-                    } else {
-                        placement[x] = newPlace;
+                    break;
+
+                case EAST:
+                    for (int x = 1; x < shipSizes[curShip]; x++) {
+                        char newL = (char) (startL + x);
+                        String newPlace = String.valueOf(Character.toUpperCase(newL)) + startR;
+                        if (usedCoordinates.contains(newPlace) || !BattleshipUtils.validateCoordinate(newPlace)) {
+                            reset = true;
+                            break;
+                        } else {
+                            placement[x] = newPlace;
+                        }
                     }
-                }
-            } else if (orientation == 2) { // south
-                for (int x = 1; x < shipSizes[curShip]; x++) {
-                    char newL = (char) (startL + x);
-                    String newPlace = String.valueOf(Character.toUpperCase(newL)) + startR;
-                    if (usedCoordinates.contains(newPlace) || !BattleshipUtils.validateCoordinate(newPlace)){
-                        reset = true;
-                        break;
-                    } else {
-                        placement[x] = newPlace;
+                    break;
+
+                case SOUTH:
+                    for (int x = 1; x < shipSizes[curShip]; x++) {
+                        int newR = startR - x;
+                        String newPlace = String.valueOf(Character.toUpperCase(startL)) + newR;
+                        if (usedCoordinates.contains(newPlace) || !BattleshipUtils.validateCoordinate(newPlace)) {
+                            reset = true;
+                            break;
+                        } else {
+                            placement[x] = newPlace;
+                        }
                     }
-                }
-            } else { // west
-                for (int x = 1; x < shipSizes[curShip]; x++) {
-                    int newR = startR - x;
-                    String newPlace = String.valueOf(Character.toUpperCase(startL)) + newR;
-                    if (usedCoordinates.contains(newPlace) || !BattleshipUtils.validateCoordinate(newPlace)){
-                        reset = true;
-                        break;
-                    } else {
-                        placement[x] = newPlace;
-                    }
-                }
+                    break;
             }
 
             //check invariants
