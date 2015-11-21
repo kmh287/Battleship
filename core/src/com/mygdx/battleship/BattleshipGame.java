@@ -121,7 +121,7 @@ public class BattleshipGame implements Screen {
 
 	private BattleshipBot getPlayer1(){
 		//TODO replace, obviously
-		return new Statbot("sb2");
+		return new Statbot("sb3");
 	}
 
 	private BattleshipBot getPlayer2(){
