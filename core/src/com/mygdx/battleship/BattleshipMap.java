@@ -70,6 +70,8 @@ public class BattleshipMap {
 
     private final boolean fog;
 
+    private static boolean assetsLoaded = false;
+
     /**
      * Constructor for the BattleshipMap.
      * @param fog Whether or not player 2's fleet should be shrouded by the fog of war
@@ -79,7 +81,10 @@ public class BattleshipMap {
     public BattleshipMap(boolean fog, AssetManager assetManager,
                          String[][] player1Ships, String[][] player2Ships){
         this.fog = fog;
-        loadAssets(assetManager);
+        if(!assetsLoaded){
+            loadAssets(assetManager);
+            assetsLoaded = true;
+        }
         setupShips(player1Ships, player1Fleet);
         setupTargets(player1targets);
         if (fog){
@@ -194,7 +199,7 @@ public class BattleshipMap {
         canvas.draw(verticalBlackBar, 450, 0);
     }
 
-    private void loadAssets(AssetManager manager){
+    private static void loadAssets(AssetManager manager){
         manager.load(WATER, Texture.class);
         manager.load(SHIP, Texture.class);
         manager.load(MISS, Texture.class);

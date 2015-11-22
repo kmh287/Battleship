@@ -14,8 +14,8 @@ public class DesktopLauncher {
 		config.vSyncEnabled = false;
 		config.foregroundFPS = 0;
 		config.backgroundFPS = 0;
-		config.x = 600;
-		config.y = 250;
+		config.x = 0;
+		config.y = 0;
 		new LwjglApplication(new BattleshipRoot(), config);
 	}
 }
