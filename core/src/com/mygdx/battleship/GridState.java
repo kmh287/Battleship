@@ -32,12 +32,7 @@ public class GridState {
 	
 	//returns a string list sorted from coordinate with highest value to lowest value
 	public String getBestShot(ArrayList<String> usedMoves) {
-        //new array
-        if (usedMoves.size() == 0) {
-            return "A1";
-        }
-
-        //old array
+        //return optimal choice
 		String move = coordinates.get(0);
 		float big = grid.get(move);
 		for (int i = 1; i < coordinates.size(); i++) {

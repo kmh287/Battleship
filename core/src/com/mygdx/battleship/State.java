@@ -26,6 +26,11 @@ public class State  {
 		shotsTaken = new ArrayList<>(shots);
 	}
 
+    @Override
+    public int hashCode() {
+        return shipsLeft.hashCode() + shotsTaken.hashCode();
+    }
+
 	@Override
 	public boolean equals(Object other) {
         if (other instanceof State) {

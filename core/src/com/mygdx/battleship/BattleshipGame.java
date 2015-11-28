@@ -17,7 +17,7 @@ public class BattleshipGame implements Screen {
     //How many times should the game play
     //TODO take as user input
     private int numGamesPlayed = 0;
-    private int numGamesToPlay = 10;
+    private int numGamesToPlay = 30;
 
     int[] wins = new int[]{0,0};
 
@@ -121,12 +121,12 @@ public class BattleshipGame implements Screen {
 
 	private BattleshipBot getPlayer1(){
 		//TODO replace, obviously
-		return new SuperStatBot("a");
+		return new SuperQBot("a");
 	}
 
 	private BattleshipBot getPlayer2(){
 		//TODO replace, obviously
-		return new RandomBot("b");
+		return new SuperStatBot("b");
 	}
 
 	@Override
@@ -205,9 +205,19 @@ public class BattleshipGame implements Screen {
 		getBotForPlayer(player).setMyMoveResult(result);
 		getBotForPlayer(adversary).setOpponentMoveResult(result);
 		if (result.getResult() == ResultType.WIN){
-			System.out.println("Player " + player.getPlayerNum() + " wins");
             wins[player.getPlayerNum()-1]++;
+			System.out.println("Player " + player.getPlayerNum() + " wins! \nPlayer " + player.getPlayerNum()
+					+ " score: " + wins[player.getPlayerNum()-1] + "  vs   Player "+ getOtherPlayer(player.getPlayerNum())
+					+ " score : " + wins[getOtherPlayer(player.getPlayerNum())-1]);
             gameOver = true;
+		}
+	}
+
+	private int getOtherPlayer(int curPlayer) {
+		if (curPlayer == 1) {
+			return 2;
+		} else {
+			return 1;
 		}
 	}
 
