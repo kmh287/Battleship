@@ -2,10 +2,7 @@ package com.mygdx.battleship;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.mygdx.battleship.BattleshipBots.BattleshipBot;
-import com.mygdx.battleship.BattleshipBots.SmartRandomBot;
-import com.mygdx.battleship.BattleshipBots.RandomBot;
-import com.mygdx.battleship.BattleshipBots.TestBot;
+import com.mygdx.battleship.BattleshipBots.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,7 +17,7 @@ public class BattleshipGame implements Screen {
     //How many times should the game play
     //TODO take as user input
     private int numGamesPlayed = 0;
-    private int numGamesToPlay = 21;
+    private int numGamesToPlay = 10;
 
     int[] wins = new int[]{0,0};
 
@@ -124,7 +121,7 @@ public class BattleshipGame implements Screen {
 
 	private BattleshipBot getPlayer1(){
 		//TODO replace, obviously
-		return new SmartRandomBot("a");
+		return new SuperStatBot("a");
 	}
 
 	private BattleshipBot getPlayer2(){
