@@ -11,9 +11,11 @@ public class DesktopLauncher {
 		config.height = 950;
 		config.resizable  = false;
 		config.fullscreen = false; // RETINA MACS DO NOT SUPPORT FULLSCREEN (LWJGL Bug)
-		config.foregroundFPS = 60;
-		config.x = 600;
-		config.y = 250;
+		config.vSyncEnabled = false;
+		config.foregroundFPS = 0;
+		config.backgroundFPS = 0;
+		config.x = 0;
+		config.y = 0;
 		new LwjglApplication(new BattleshipRoot(), config);
 	}
 }
