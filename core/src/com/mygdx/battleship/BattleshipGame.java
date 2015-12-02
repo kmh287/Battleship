@@ -2,9 +2,7 @@ package com.mygdx.battleship;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.mygdx.battleship.BattleshipBots.BattleshipBot;
-import com.mygdx.battleship.BattleshipBots.LoserBot;
-import com.mygdx.battleship.BattleshipBots.TestBot;
+import com.mygdx.battleship.BattleshipBots.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,7 +17,8 @@ public class BattleshipGame implements Screen {
     //How many times should the game play
     //TODO take as user input
     private int numGamesPlayed = 0;
-    private int numGamesToPlay = 1;
+    private int numGamesToPlay = 30;
+
 
 	int[] wins = new int[]{0,0};
 
@@ -70,7 +69,7 @@ public class BattleshipGame implements Screen {
 		int tries = 0;
 		// Validate player 1
 		while(true) {
-			player1Fleet = player1Bot.getShipPlcements();
+			player1Fleet = player1Bot.getShipPlacements();
 			if (BattleshipUtils.validateFleet(player1Fleet)){
 				fleet1 = player1Fleet;
 				break;
@@ -84,7 +83,7 @@ public class BattleshipGame implements Screen {
 
 		// Validate player 2
 		while(true) {
-			player2Fleet = player2Bot.getShipPlcements();
+			player2Fleet = player2Bot.getShipPlacements();
 			if (BattleshipUtils.validateFleet(player2Fleet)){
 				fleet2 = player2Fleet;
 				break;
@@ -102,8 +101,8 @@ public class BattleshipGame implements Screen {
 
 		//Put empty sets into ship -> set(coordinates) map
 		for (BattleshipType type : BattleshipType.values()){
-			player1ShipMap.put(type, new HashSet<>());
-			player2ShipMap.put(type, new HashSet<>());
+			player1ShipMap.put(type, new HashSet<String>());
+			player2ShipMap.put(type, new HashSet<String>());
 		}
 
 		for (int i = 0; i < player1Fleet.length; ++i){
@@ -123,12 +122,12 @@ public class BattleshipGame implements Screen {
 
 	private BattleshipBot getPlayer1(){
 		//TODO replace, obviously
-		return new TestBot();
+		return new SuperQBot("a");
 	}
 
 	private BattleshipBot getPlayer2(){
 		//TODO replace, obviously
-		return new TestBot();
+		return new SuperStatBot("b");
 	}
 
 	@Override
@@ -209,9 +208,19 @@ public class BattleshipGame implements Screen {
 		getBotForPlayer(player).setMyMoveResult(result);
 		getBotForPlayer(adversary).setOpponentMoveResult(result);
 		if (result.getResult() == ResultType.WIN){
-			System.out.println("Player " + player.getPlayerNum() + " wins");
             wins[player.getPlayerNum()-1]++;
+			System.out.println("Player " + player.getPlayerNum() + " wins! \nPlayer " + player.getPlayerNum()
+					+ " score: " + wins[player.getPlayerNum()-1] + "  vs   Player "+ getOtherPlayer(player.getPlayerNum())
+					+ " score : " + wins[getOtherPlayer(player.getPlayerNum())-1]);
             gameOver = true;
+		}
+	}
+
+	private int getOtherPlayer(int curPlayer) {
+		if (curPlayer == 1) {
+			return 2;
+		} else {
+			return 1;
 		}
 	}
 

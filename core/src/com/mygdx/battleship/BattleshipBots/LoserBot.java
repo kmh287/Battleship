@@ -3,10 +3,14 @@ package com.mygdx.battleship.BattleshipBots;
 import com.mygdx.battleship.MoveResult;
 
 
-public class LoserBot implements BattleshipBot {
+public class LoserBot extends BattleshipBot {
+
+    public LoserBot(String name) {
+        super(name);
+    }
 
     @Override
-    public String[][] getShipPlcements() {
+    public String[][] getShipPlacements() {
         return null;
     }
 

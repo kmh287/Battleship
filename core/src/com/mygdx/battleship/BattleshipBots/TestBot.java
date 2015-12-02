@@ -6,22 +6,15 @@ import com.mygdx.battleship.BattleshipUtils;
 import com.mygdx.battleship.MoveResult;
 
 
-public class TestBot implements BattleshipBot  {
+public class TestBot extends BattleshipBot  {
 
-    private final int[] shipSizes = {2,3,3,4,5};
-    private String[][] shipsLocations;
-    private String move;
-    private HashMap<String,String> botShots; //bot's shots
-    private HashMap<String,String> opponentShots; //oponents shots
     private final List<String> moves = new ArrayList<>(100);
 
     /**
      * Constructor
      */
-    public TestBot() {
-        shipsLocations = new String[5][];
-        botShots = new HashMap<>();
-        opponentShots = new HashMap<>();
+    public TestBot(String name) {
+        super(name);
         shipPlacements();
         setupMoves();
     }
@@ -30,8 +23,7 @@ public class TestBot implements BattleshipBot  {
         for (int i = 0; i < 10; ++i){
             for (int j = 1; j <= 10; ++j){
                 char row = (char) (i + 'A');
-                int col = j;
-                moves.add("" + row + col);
+                moves.add("" + row + j);
             }
         }
         Collections.shuffle(moves);
@@ -41,11 +33,11 @@ public class TestBot implements BattleshipBot  {
      * Decide ship placement.
      * Sets ship placement variable.
      */
-    public void shipPlacements() {
+    private void shipPlacements() {
         //start from the largest ship.
         int curShip = 0;
 
-        HashSet<String> usedCoordinates = new HashSet<String>();
+        HashSet<String> usedCoordinates = new HashSet<>();
 
         while (curShip < 5) {
 
@@ -131,7 +123,7 @@ public class TestBot implements BattleshipBot  {
      * returns array of ship placements as array of grid points.
      * [destroyer2, cruiser3, submarine3, battleship4, carrier5]
      */
-    public String[][] getShipPlcements() {
+    public String[][] getShipPlacements() {
         return shipsLocations;
     }
 
@@ -147,7 +139,6 @@ public class TestBot implements BattleshipBot  {
             return "A1";
         }
     }
-
 
     public void setMyMoveResult(MoveResult result){}
 
