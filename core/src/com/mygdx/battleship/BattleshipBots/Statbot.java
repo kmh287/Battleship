@@ -10,7 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class Statbot extends BattleshipBot {
+public class StatBot extends BattleshipBot {
 
     public static final String STANDARD_PATH = "bots/statbot/";
     private PriorityQueue<String> moves =
@@ -18,7 +18,7 @@ public class Statbot extends BattleshipBot {
     private final JSONObject json;
     private final String path;
 
-    public Statbot(String name) {
+    public StatBot(String name) {
         super(name);
         path = new File(STANDARD_PATH + name).getAbsolutePath();
         shipPlacements();

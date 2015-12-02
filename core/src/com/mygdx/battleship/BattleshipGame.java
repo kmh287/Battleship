@@ -17,7 +17,7 @@ public class BattleshipGame implements Screen {
     //How many times should the game play
     //TODO take as user input
     private int numGamesPlayed = 0;
-    private int numGamesToPlay = 100000;
+    private int numGamesToPlay = 1000;
 
 	int[] wins = new int[]{0,0};
 
@@ -121,12 +121,12 @@ public class BattleshipGame implements Screen {
 
 	private BattleshipBot getPlayer1(){
 		//TODO replace, obviously
-		return new Statbot("sb8");
+		return new StatBot("sb9");
 	}
 
 	private BattleshipBot getPlayer2(){
 		//TODO replace, obviously
-		return new RandomBot("b");
+		return new SmartStatBot("ssb1");
 	}
 
 	@Override
