@@ -19,7 +19,8 @@ public class BattleshipGame implements Screen {
     private int numGamesPlayed = 0;
     private int numGamesToPlay = 30;
 
-    int[] wins = new int[]{0,0};
+
+	int[] wins = new int[]{0,0};
 
 	private final GameCanvas canvas;
 	private BattleshipMap map;
@@ -34,32 +35,32 @@ public class BattleshipGame implements Screen {
 	private final Map<String, BattleshipType> player2CoordinateMap = new HashMap<>();
 	private final Map<BattleshipType, Set<String>> player2ShipMap = new HashMap<>();
 
-    private String[][] fleet1;
-    private String[][] fleet2;
+	private String[][] fleet1;
+	private String[][] fleet2;
 
-    private boolean gameOver = false;
+	private boolean gameOver = false;
 
 	public BattleshipGame (GameCanvas canvas){
 		this.canvas = canvas;
-        setup();
+		setup();
 	}
 
-    private void reset(){
-        player1CoordinateMap.clear();
-        player2CoordinateMap.clear();
-        player1ShipMap.clear();
-        player2ShipMap.clear();
-        gameOver = false;
-        setup();
-    }
+	private void reset(){
+		player1CoordinateMap.clear();
+		player2CoordinateMap.clear();
+		player1ShipMap.clear();
+		player2ShipMap.clear();
+		gameOver = false;
+		setup();
+	}
 
-    private void setup(){
-        this.player1Bot = getPlayer1();
-        this.player2Bot = getPlayer2();
-        validateFleets();
-        setupMetadata();
-        this.map = new BattleshipMap(false, new AssetManager(), fleet1, fleet2);
-    }
+	private void setup(){
+		this.player1Bot = getPlayer1();
+		this.player2Bot = getPlayer2();
+		validateFleets();
+		setupMetadata();
+		this.map = new BattleshipMap(false, new AssetManager(), fleet1, fleet2);
+	}
 
 	private void validateFleets(){
 		String[][] player1Fleet = null;
@@ -70,11 +71,11 @@ public class BattleshipGame implements Screen {
 		while(true) {
 			player1Fleet = player1Bot.getShipPlacements();
 			if (BattleshipUtils.validateFleet(player1Fleet)){
-                fleet1 = player1Fleet;
+				fleet1 = player1Fleet;
 				break;
 			} else if (++tries >= RETRY_THRESHOLD){
 				System.out.println("Player 1 loses due to bad placement");
-				System.exit(-1);
+				System.exit(-1); //TODO reset
 			}
 		}
 
@@ -84,24 +85,24 @@ public class BattleshipGame implements Screen {
 		while(true) {
 			player2Fleet = player2Bot.getShipPlacements();
 			if (BattleshipUtils.validateFleet(player2Fleet)){
-                fleet2 = player2Fleet;
+				fleet2 = player2Fleet;
 				break;
 			} else if (++tries >= RETRY_THRESHOLD){
 				System.out.println("Player 2 loses due to bad placement");
-				System.exit(-1);
+				System.exit(-1); //TODO reset
 			}
 		}
 	}
 
 	// Setup the data used to play the game such as
 	private void setupMetadata(){
-		String[][] player1Fleet = player1Bot.getShipPlacements();
-		String[][] player2Fleet = player2Bot.getShipPlacements();
+		String[][] player1Fleet = fleet1;
+		String[][] player2Fleet = fleet2;
 
 		//Put empty sets into ship -> set(coordinates) map
 		for (BattleshipType type : BattleshipType.values()){
-			player1ShipMap.put(type, new HashSet<>());
-			player2ShipMap.put(type, new HashSet<>());
+			player1ShipMap.put(type, new HashSet<String>());
+			player2ShipMap.put(type, new HashSet<String>());
 		}
 
 		for (int i = 0; i < player1Fleet.length; ++i){
@@ -138,7 +139,9 @@ public class BattleshipGame implements Screen {
 	private void update(float delta) {
         if (!gameOver) {
             performMoveForPlayer(Player.PLAYER_1);
-            performMoveForPlayer(Player.PLAYER_2);
+			if (!gameOver) {
+				performMoveForPlayer(Player.PLAYER_2);
+			}
             BattleshipUtils.sleep(SLEEP_TIME_BETWEEN_TURNS);
         } else {
             if (++numGamesPlayed < numGamesToPlay) {
