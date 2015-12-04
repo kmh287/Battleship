@@ -2,10 +2,7 @@ package com.mygdx.battleship.BattleshipBots;
 
 import java.util.*;
 
-import com.mygdx.battleship.BattleshipUtils;
-import com.mygdx.battleship.MoveResult;
-import com.mygdx.battleship.ResultType;
-import com.mygdx.battleship.OrientationType;
+import com.mygdx.battleship.*;
 
 public class SmartRandomBot extends BattleshipBot  {
 
@@ -13,10 +10,14 @@ public class SmartRandomBot extends BattleshipBot  {
     private final LinkedList<String> moves = new LinkedList<>();
     private final LinkedList<String> lastHits = new LinkedList<>();
 
+    //hunt validation
+    private int huntHits = 0;
+    private boolean huntOver = true;
+
     private boolean hit = false;
-    private boolean sink = false;
     private boolean foundShip = false;
     private OrientationType direction = OrientationType.NORTH;
+
 
 	/**
 	 * Constructor
@@ -38,14 +39,83 @@ public class SmartRandomBot extends BattleshipBot  {
         Collections.shuffle(moves);
     }
 
-	/**
-	 * Randomly decides next move.
+    /**
+     * Check if still need to hunt
+     */
+    private void huntCheck(MoveResult result) {
+        BattleshipType sunk = result.getSunkShip();
+        switch (sunk) {
+            case DESTROYER:
+                if (huntHits == 2) {
+                    huntHits = 0;
+                    huntOver = true;
+                } else {
+                    huntHits  = huntHits - 2;
+                    huntOver = false;
+                }
+                break;
+            case CRUISER:
+                if (huntHits == 3) {
+                    huntHits = 0;
+                    huntOver = true;
+                } else {
+                    huntHits  = huntHits - 3;
+                    huntOver = false;
+                }
+                break;
+            case SUBMARINE:
+                if (huntHits == 3) {
+                    huntHits = 0;
+                    huntOver = true;
+                } else {
+                    huntHits  = huntHits - 3;
+                    huntOver = false;
+                }
+                break;
+            case BATTLESHIP:
+                if (huntHits == 4) {
+                    huntHits = 0;
+                    huntOver = true;
+                } else {
+                    huntHits  = huntHits - 4;
+                    huntOver = false;
+                }
+                break;
+            case CARRIER:
+                if (huntHits == 5) {
+                    huntHits = 0;
+                    huntOver = true;
+                } else {
+                    huntHits  = huntHits - 5;
+                    huntOver = false;
+                }
+                break;
+        }
+    }
+
+    private boolean directionCheck(String coord) {
+        char left = coord.charAt(0);
+        int right = Integer.parseInt(coord.substring(1, coord.length()));
+        boolean chk1 = moves.contains(String.valueOf(Character.toUpperCase((char) (left-1))) + right)
+                && BattleshipUtils.validateCoordinate(String.valueOf(Character.toUpperCase((char) (left-1))) + right);
+        boolean chk2 = moves.contains(String.valueOf(Character.toUpperCase((char) (left+1))) + right)
+                && BattleshipUtils.validateCoordinate(String.valueOf(Character.toUpperCase((char) (left+1))) + right);
+        boolean chk3 = moves.contains(String.valueOf(Character.toUpperCase((left))) + (right+1))
+                && BattleshipUtils.validateCoordinate(String.valueOf(Character.toUpperCase((left))) + (right+1));
+        boolean chk4 = moves.contains(String.valueOf(Character.toUpperCase((left))) + (right-1))
+                && BattleshipUtils.validateCoordinate(String.valueOf(Character.toUpperCase((left))) + (right-1));
+        return (chk1 || chk2 || chk3 || chk4);
+    }
+
+    /**
+     * Randomly decides next move.
      * If hit in last turn, randomly choose a direction and continue on direction
      * If another hit, continue on direction.
      * If it has found a ship, will intelligently shoot around the ship until it dies.
-	 */
-	private void nextMove() {
-        if ((sink)||(!foundShip)) {
+     */
+    private void nextMove() {
+        if ((!foundShip)&&(huntOver)) {
+            lastHits.clear();
             usedDirections.clear();
             move = getRandomMove();
         } else {
@@ -54,11 +124,15 @@ public class SmartRandomBot extends BattleshipBot  {
                 //if miss, select an untried direction, otherwise keep direction
                 if ((!hit)||badCoordinate) {
                     usedDirections.add(direction);
+                    //select new direction
                     OrientationType newDirection = OrientationType.values()[(direction.ordinal()+2)%4];
                     Random rand = new Random();
+                    //if all directions have been tried,
                     if (usedDirections.size() == 4) {
                         usedDirections.clear();
-                        lastHits.removeLast();
+                        if (!directionCheck(lastHits.getLast())) {
+                            lastHits.removeLast();
+                        }
                     }
                     while (usedDirections.contains(newDirection)) {
                         newDirection = OrientationType.values()[rand.nextInt(4)];
@@ -72,15 +146,12 @@ public class SmartRandomBot extends BattleshipBot  {
                     case WEST:
                         left = (char) (left - 1);
                         break;
-
                     case NORTH:
                         right = right + 1;
                         break;
-
                     case EAST:
                         left = (char) (left + 1);
                         break;
-
                     case SOUTH:
                         right = right - 1;
                         break;
@@ -128,21 +199,20 @@ public class SmartRandomBot extends BattleshipBot  {
         switch (res) {
             case MISS:
                 hit = false;
-                sink = false;
                 break;
-
             case HIT:
                 hit = true;
-                sink = false;
                 foundShip = true;
-                lastHits.add(move);
+                lastHits.addLast(move);
+                huntHits++;
                 break;
-
             case SINK:
                 hit = true;
-                sink = true;
                 foundShip = false;
                 usedDirections.clear();
+                lastHits.addLast(move);
+                huntHits++;
+                huntCheck(result);
                 break;
         }
     }

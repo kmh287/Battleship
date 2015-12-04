@@ -1,4 +1,4 @@
-package org.json;
+package com.mygdx.battleship.JSON;
 
 import java.io.IOException;
 import java.io.Writer;

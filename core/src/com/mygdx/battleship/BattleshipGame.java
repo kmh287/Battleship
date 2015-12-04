@@ -19,6 +19,7 @@ public class BattleshipGame implements Screen {
     private int numGamesPlayed = 0;
     private int numGamesToPlay = 1000;
 
+
 	int[] wins = new int[]{0,0};
 
 	private final GameCanvas canvas;
@@ -100,8 +101,8 @@ public class BattleshipGame implements Screen {
 
 		//Put empty sets into ship -> set(coordinates) map
 		for (BattleshipType type : BattleshipType.values()){
-			player1ShipMap.put(type, new HashSet<>());
-			player2ShipMap.put(type, new HashSet<>());
+			player1ShipMap.put(type, new HashSet<String>());
+			player2ShipMap.put(type, new HashSet<String>());
 		}
 
 		for (int i = 0; i < player1Fleet.length; ++i){
@@ -120,13 +121,11 @@ public class BattleshipGame implements Screen {
 	}
 
 	private BattleshipBot getPlayer1(){
-		//TODO replace, obviously
-		return new StatBot("sb9");
+		return new StatBot("12-2-15-b");
 	}
 
 	private BattleshipBot getPlayer2(){
-		//TODO replace, obviously
-		return new SmartStatBot("ssb1");
+		return new SuperQBot("12-1-15-b");
 	}
 
 	@Override
@@ -208,9 +207,19 @@ public class BattleshipGame implements Screen {
 		getBotForPlayer(player).setMyMoveResult(result);
 		getBotForPlayer(adversary).setOpponentMoveResult(result);
 		if (result.getResult() == ResultType.WIN){
-//			System.out.println("Player " + player.getPlayerNum() + " wins");
             wins[player.getPlayerNum()-1]++;
+			System.out.println("Player " + player.getPlayerNum() + " wins! \n" +
+					"Player 1 score: " + wins[0] + "  vs   " +
+					"Player 2 score:"+ wins[1]);
             gameOver = true;
+		}
+	}
+
+	private int getOtherPlayer(int curPlayer) {
+		if (curPlayer == 1) {
+			return 2;
+		} else {
+			return 1;
 		}
 	}
 

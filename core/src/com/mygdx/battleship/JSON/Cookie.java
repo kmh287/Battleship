@@ -1,4 +1,4 @@
-package org.json;
+package com.mygdx.battleship.JSON;
 
 /*
 Copyright (c) 2002 JSON.org
@@ -23,6 +23,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+
+import com.oracle.javafx.jmx.json.JSONException;
 
 /**
  * Convert a web browser cookie specification to a JSONObject and back.

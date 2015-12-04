@@ -1,4 +1,4 @@
-package org.json;
+package com.mygdx.battleship.JSON;
 
 /*
  Copyright (c) 2002 JSON.org

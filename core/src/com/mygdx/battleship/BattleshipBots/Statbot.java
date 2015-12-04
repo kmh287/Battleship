@@ -1,8 +1,8 @@
 package com.mygdx.battleship.BattleshipBots;
 
+import com.mygdx.battleship.JSON.JSONObject;
 import com.mygdx.battleship.MoveResult;
 import com.mygdx.battleship.ResultType;
-import org.json.JSONObject;
 
 import java.io.*;
 import java.nio.charset.Charset;
