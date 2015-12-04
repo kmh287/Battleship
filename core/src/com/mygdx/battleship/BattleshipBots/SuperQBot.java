@@ -17,6 +17,10 @@ public class SuperQBot extends BattleshipBot  {
     private final ArrayList<String> parityCoords = new ArrayList<>();
     private final ArrayList<String> usedMoves = new ArrayList<>();
     private  HashMap<State,GridState> allStates;
+
+    //for testing
+    private HashMap<State,GridState> as;
+
     private final ArrayList<BattleshipType> shipsLeft = new ArrayList<>();
     private State curState;
     private State lastState;
@@ -68,7 +72,7 @@ public class SuperQBot extends BattleshipBot  {
             ArrayList<State> keys = mapper.readValue(state_file, new TypeReference<ArrayList<State>>(){});
             ArrayList<GridState> maps = mapper.readValue(grid_file, new TypeReference<ArrayList<GridState>>(){});
             allStates = new HashMap<>();
-            //System.out.println(keys.size());
+            System.out.println(keys.size());
             for (int i = 0; i < keys.size(); i++) {
                 allStates.put(keys.get(i), maps.get(i));
             }
@@ -82,6 +86,8 @@ public class SuperQBot extends BattleshipBot  {
             GridState fresh = new GridState();
             allStates.put(curState, fresh);
         }
+
+        as = new HashMap<>(allStates);
 
         //initialize parity coordinate array
         //create parity arrays
@@ -256,7 +262,6 @@ public class SuperQBot extends BattleshipBot  {
             GridState fresh = new GridState();
             allStates.put(curState, fresh);
         }
-
     }
 
     private void cleanShips(MoveResult result) {
@@ -265,6 +270,12 @@ public class SuperQBot extends BattleshipBot  {
             shipsLeft.remove(BattleshipType.CARRIER);
         } else {
             shipsLeft.remove(sunk);
+        }
+    }
+
+    private void testMore(State lastState, boolean res, float max) {
+        if (as.get(lastState) != null) {
+            as.get(lastState).update(move,res,max);
         }
     }
 
@@ -278,13 +289,19 @@ public class SuperQBot extends BattleshipBot  {
                 checkStates(curState);
                 max = allStates.get(curState).highestValue();
                 allStates.get(lastState).update(move, false, max);
+
+                //update current states
+                //testMore(lastState, false, max);
                 break;
 
             case HIT:
                 curState = new State(shipsLeft, parityShots);
                 checkStates(curState);
                 max = allStates.get(curState).highestValue();
-                allStates.get(lastState).update(move, false, max);
+                allStates.get(lastState).update(move, true, max);
+
+                //update current states
+                //testMore(lastState, true, max);
                 break;
 
             case SINK:
@@ -292,7 +309,10 @@ public class SuperQBot extends BattleshipBot  {
                 curState = new State(shipsLeft, parityShots);
                 checkStates(curState);
                 max = allStates.get(curState).highestValue();
-                allStates.get(lastState).update(move, false, max);
+                allStates.get(lastState).update(move, true, max);
+
+                //update current states
+                //testMore(lastState, true, max);
                 break;
 
             case WIN:
@@ -300,11 +320,17 @@ public class SuperQBot extends BattleshipBot  {
                 curState = new State(shipsLeft, parityShots);
                 checkStates(curState);
                 max = allStates.get(curState).highestValue();
-                allStates.get(lastState).update(move, false, max);
+                allStates.get(lastState).update(move, true, max);
+
+                //update current states
+                //testMore(lastState, true, max);
+
                 //serialize data
                 try {
                     mapper.writeValue(state_file, allStates.keySet());
                     mapper.writeValue(grid_file, allStates.values());
+                    //mapper.writeValue(state_file, as.keySet());
+                    //mapper.writeValue(grid_file, as.values());
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
                 }
