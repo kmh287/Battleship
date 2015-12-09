@@ -20,6 +20,7 @@ public class BattleshipGame implements Screen {
     private int numGamesToPlay = 1000;
 
 
+
 	int[] wins = new int[]{0,0};
 
 	private final GameCanvas canvas;

@@ -155,7 +155,9 @@ public class QBot extends BattleshipBot  {
             GridState fresh = new GridState();
             allStates.put(curState, fresh);
         }
-
+        else {
+//            System.out.println("hello");
+        }
     }
 
     private void updateState(MoveResult result) {
