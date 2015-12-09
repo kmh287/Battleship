@@ -7,16 +7,12 @@ public class LoserBot extends BattleshipBot {
 
     public LoserBot(String name) {
         super(name);
-    }
-
-    @Override
-    public String[][] getShipPlacements() {
-        return null;
+        shipPlacements();
     }
 
     @Override
     public String getMove() {
-        return null;
+        return "A1";
     }
 
     @Override

@@ -15,10 +15,8 @@ public class BattleshipGame implements Screen {
 	private static int SLEEP_TIME_BETWEEN_TURNS = 0; //miliseconds
 
     //How many times should the game play
-    //TODO take as user input
     private int numGamesPlayed = 0;
-    private int numGamesToPlay = 2;
-
+    private int numGamesToPlay = 1000;
 
 	int[] wins = new int[]{0,0};
 
@@ -75,7 +73,7 @@ public class BattleshipGame implements Screen {
 				break;
 			} else if (++tries >= RETRY_THRESHOLD){
 				System.out.println("Player 1 loses due to bad placement");
-				System.exit(-1); //TODO reset
+				System.exit(-1);
 			}
 		}
 
@@ -89,7 +87,7 @@ public class BattleshipGame implements Screen {
 				break;
 			} else if (++tries >= RETRY_THRESHOLD){
 				System.out.println("Player 2 loses due to bad placement");
-				System.exit(-1); //TODO reset
+				System.exit(-1); 
 			}
 		}
 	}
@@ -121,13 +119,11 @@ public class BattleshipGame implements Screen {
 	}
 
 	private BattleshipBot getPlayer1(){
-		//TODO replace, obviously
-		return new SuperQBot("a");
+		return new StatBot("12-2-15-b");
 	}
 
 	private BattleshipBot getPlayer2(){
-		//TODO replace, obviously
-		return new SmartRandomBot("b");
+		return new SuperQBot("12-1-15-b");
 	}
 
 	@Override
@@ -145,6 +141,7 @@ public class BattleshipGame implements Screen {
             BattleshipUtils.sleep(SLEEP_TIME_BETWEEN_TURNS);
         } else {
             if (++numGamesPlayed < numGamesToPlay) {
+				System.out.println("Finished game: " + numGamesPlayed);
                 reset();
             } else {
                 waitForUserInput();
@@ -209,9 +206,9 @@ public class BattleshipGame implements Screen {
 		getBotForPlayer(adversary).setOpponentMoveResult(result);
 		if (result.getResult() == ResultType.WIN){
             wins[player.getPlayerNum()-1]++;
-			System.out.println("Player " + player.getPlayerNum() + " wins! \nPlayer " + player.getPlayerNum()
-					+ " score: " + wins[player.getPlayerNum()-1] + "  vs   Player "+ getOtherPlayer(player.getPlayerNum())
-					+ " score : " + wins[getOtherPlayer(player.getPlayerNum())-1]);
+			System.out.println("Player " + player.getPlayerNum() + " wins! \n" +
+					"Player 1 score: " + wins[0] + "  vs   " +
+					"Player 2 score:"+ wins[1]);
             gameOver = true;
 		}
 	}

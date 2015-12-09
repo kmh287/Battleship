@@ -26,6 +26,7 @@ public class SmartRandomBot extends BattleshipBot  {
 		super(name);
         shipPlacements();
         setupMoves();
+
 	}
 
     private void setupMoves() {
@@ -36,95 +37,6 @@ public class SmartRandomBot extends BattleshipBot  {
             }
         }
         Collections.shuffle(moves);
-    }
-
-    /**
-     * Decide ship placement.
-     * Sets ship placement variable.
-     */
-    private void shipPlacements() {
-        int curShip = 0;
-        HashSet<String> usedCoordinates = new HashSet<>();
-
-        while (curShip < 5) {
-            boolean reset = false;
-            String[] placement = new String[shipSizes[curShip]];
-            //decide random starting position and orientation
-            Random rand1 = new Random();
-            Random rand2 = new Random();
-            char startL = (char) (rand1.nextInt(10) + 'a');
-            int  startR = rand1.nextInt(10)+1;
-            OrientationType orientation = OrientationType.values()[rand2.nextInt(4)];
-
-            //place ships
-            String start = String.valueOf(Character.toUpperCase(startL)) + startR;
-            if (usedCoordinates.contains(start)){
-                continue; //try again
-            } else {
-                placement[0] = start;
-            }
-            switch (orientation) {
-                case WEST:
-                    for (int x = 1; x < shipSizes[curShip]; x++) {
-                        char newL = (char) (startL - x);
-                        String newPlace = String.valueOf(Character.toUpperCase(newL)) + startR;
-                        if (usedCoordinates.contains(newPlace) || !BattleshipUtils.validateCoordinate(newPlace)) {
-                            reset = true;
-                            break;
-                        } else {
-                            placement[x] = newPlace;
-                        }
-                    }
-                    break;
-
-                case NORTH:
-                    for (int x = 1; x < shipSizes[curShip]; x++) {
-                        int newR = startR + x;
-                        String newPlace = String.valueOf(Character.toUpperCase(startL)) + newR;
-                        if (usedCoordinates.contains(newPlace) || !BattleshipUtils.validateCoordinate(newPlace)) {
-                            reset = true;
-                            break;
-                        } else {
-                            placement[x] = newPlace;
-                        }
-                    }
-                    break;
-
-                case EAST:
-                    for (int x = 1; x < shipSizes[curShip]; x++) {
-                        char newL = (char) (startL + x);
-                        String newPlace = String.valueOf(Character.toUpperCase(newL)) + startR;
-                        if (usedCoordinates.contains(newPlace) || !BattleshipUtils.validateCoordinate(newPlace)) {
-                            reset = true;
-                            break;
-                        } else {
-                            placement[x] = newPlace;
-                        }
-                    }
-                    break;
-
-                case SOUTH:
-                    for (int x = 1; x < shipSizes[curShip]; x++) {
-                        int newR = startR - x;
-                        String newPlace = String.valueOf(Character.toUpperCase(startL)) + newR;
-                        if (usedCoordinates.contains(newPlace) || !BattleshipUtils.validateCoordinate(newPlace)) {
-                            reset = true;
-                            break;
-                        } else {
-                            placement[x] = newPlace;
-                        }
-                    }
-                    break;
-            }
-
-            //check invariants
-            reset = reset || !BattleshipUtils.validateShip(placement);
-            if (!reset) {
-                shipsLocations[curShip] = placement;
-                curShip++;
-                usedCoordinates.addAll(Arrays.asList(placement));
-            }
-        }
     }
 
     /**
@@ -195,7 +107,13 @@ public class SmartRandomBot extends BattleshipBot  {
         return (chk1 || chk2 || chk3 || chk4);
     }
 
-	private void nextMove() {
+    /**
+     * Randomly decides next move.
+     * If hit in last turn, randomly choose a direction and continue on direction
+     * If another hit, continue on direction.
+     * If it has found a ship, will intelligently shoot around the ship until it dies.
+     */
+    private void nextMove() {
         if ((!foundShip)&&(huntOver)) {
             lastHits.clear();
             usedDirections.clear();
@@ -263,11 +181,6 @@ public class SmartRandomBot extends BattleshipBot  {
         } else{
             return "A1";
         }
-    }
-
-    public String[][] getShipPlacements() {
-        shipPlacements();
-        return shipsLocations;
     }
 
     /**
