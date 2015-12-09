@@ -72,7 +72,7 @@ public class SuperQBot extends BattleshipBot  {
             ArrayList<State> keys = mapper.readValue(state_file, new TypeReference<ArrayList<State>>(){});
             ArrayList<GridState> maps = mapper.readValue(grid_file, new TypeReference<ArrayList<GridState>>(){});
             allStates = new HashMap<>();
-            System.out.println(keys.size());
+//            System.out.println(keys.size());
             for (int i = 0; i < keys.size(); i++) {
                 allStates.put(keys.get(i), maps.get(i));
             }
