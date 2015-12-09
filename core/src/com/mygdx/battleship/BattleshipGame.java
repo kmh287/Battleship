@@ -15,11 +15,8 @@ public class BattleshipGame implements Screen {
 	private static int SLEEP_TIME_BETWEEN_TURNS = 0; //miliseconds
 
     //How many times should the game play
-    //TODO take as user input
     private int numGamesPlayed = 0;
     private int numGamesToPlay = 1000;
-
-
 
 	int[] wins = new int[]{0,0};
 
@@ -76,7 +73,7 @@ public class BattleshipGame implements Screen {
 				break;
 			} else if (++tries >= RETRY_THRESHOLD){
 				System.out.println("Player 1 loses due to bad placement");
-				System.exit(-1); //TODO reset
+				System.exit(-1);
 			}
 		}
 
@@ -90,7 +87,7 @@ public class BattleshipGame implements Screen {
 				break;
 			} else if (++tries >= RETRY_THRESHOLD){
 				System.out.println("Player 2 loses due to bad placement");
-				System.exit(-1); //TODO reset
+				System.exit(-1); 
 			}
 		}
 	}
